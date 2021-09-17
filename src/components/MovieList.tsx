@@ -12,7 +12,6 @@ export default function MovieList() {
 
     return (
         <div>
-            <SearchForm />
             {movie?.slice(0,10).map((singleMovie, index) => {
                 return (
                     <div key={index}>
