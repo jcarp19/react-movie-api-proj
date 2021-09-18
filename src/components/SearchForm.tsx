@@ -1,20 +1,35 @@
 import {useEffect, useState} from "react";
+import {useHistory, useParams} from "react-router";
 import Movie from "../models/Movie";
 import FilterMovies from "../services/FilterMovies";
+interface RouteParams {
+    filterValue: any
+}
 
 export default function SearchForm() {
+    const [genre, setGenre] = useState("");
     const [movie, setMovie] = useState<Movie[]>([]);
-    useEffect(() => {FilterMovies().then(data => setMovie(data));
+    const {filterValue} = useParams<RouteParams>();
+    // function handleClick() {
+    //     history.push(`/Movies/${filterValue}`)
+    // }
+    useEffect(() => { console.log(filterValue)
+        FilterMovies(filterValue).then(data => setMovie(data));
     }, []);
 
     return (
         <div>
 
-        <form onSubmit={() => {}}>
-            <label htmlFor="search">Search
-                <input type="text" name="search" id="search" required placeholder="Search for a movie" />
+        <form>
+            <label htmlFor="filter">Filter
+                <input value={filterValue} type="text" name="filter" id="filter" required placeholder="Filter by Genre" onChange={(event) => {
+                    setGenre(event.target.value)
+                }} />
+                {/* <input type="radio" name="filter" id="filter" value={genre} onChange={(event) => {
+                    setGenre(event.target.value)
+                }} /> */}
             </label>
-            <button>Search</button>
+            <button type="submit">Filter</button>
         </form>
         {movie?.map((singleMovie, index) => {
                 return (
